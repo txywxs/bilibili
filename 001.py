@@ -25,15 +25,21 @@ print("------2-------")
 html_obj = etree.HTML(str_data)
 print("------3-------")
 # 获取视频的名称
-title = html_obj.xpath("//span[@class='tit']/text()")
+title = html_obj.xpath("//span[@class='tit']/text()")[0]
 print(title)
 
 # 如果视频的名称有特殊字符会影响
 # 将视频名字里面的特殊字符全部替换为空
-title_ = title.replace('/', '')
+title = title.replace('/', '')
 title = title.replace(' ', '')
 title = title.replace('&', '')
 title = title.replace('×', '')
+
+
+# 获取到视频的播放地址
+mp4_video = html_obj.xpath('//script[contains(text(),"window.__playinfo__")]/text()')
+print(mp4_video)
+mp3_video = html_obj.xpath('//script[contains(text(),"window.__playinfo__")]/text()')
 
 
 
