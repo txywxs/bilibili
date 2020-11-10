@@ -26,6 +26,7 @@ html_obj = etree.HTML(str_data)
 print("------3-------")
 # 获取视频的名称
 title = html_obj.xpath("//span[@class='tit']/text()")[0]
+vid_aud = html_obj.xpath('//script[contains(text(),"window.__playinfo__")]/text()')[0]
 print(title)
 
 # 如果视频的名称有特殊字符会影响
@@ -37,10 +38,10 @@ title = title.replace('×', '')
 
 
 # 获取到视频的播放地址
-mp4_video = html_obj.xpath('//script[contains(text(),"window.__playinfo__")]/text()')[0]
-mp4_video = re.findall(r'"video":\[{"id":\d+,"baseUrl":"(.*?)"',mp4_video)[0]
+mp4_video = re.findall(r'"video":\[{"id":\d+,"baseUrl":"(.*?)"',vid_aud)[0]
 print(mp4_video)
-mp3_video = html_obj.xpath('//script[contains(text(),"window.__playinfo__")]/text()')
-
+# 获取到视频音频
+mp3_video = re.findall(r'"audio":\[{"id":\d+,"baseUrl":"(.*?)"',vid_aud)[0]
+print(mp3_video)
 
 
