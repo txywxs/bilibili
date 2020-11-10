@@ -4,9 +4,10 @@ from lxml import etree
 import re
 
 # 1.确认url
-url = 'https://www.bilibili.com/video/BV1k54y1r79P?spm_id_from=333.851.b_7265706f7274466972737431.8'
+url = '' \
+      'https://www.bilibili.com/video/BV1k54y1r79P?spm_id_from=333.851.b_7265706f7274466972737431.8'
 # 2.设置用户代理,Cookie
-headers_ = {
+headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
                   'Chrome/84.0.4147.125 Safari/537.36',
     'cookie': "_uuid=A10E1109-5230-332F-7889-E7B566296C0477565infoc; "
@@ -15,8 +16,9 @@ headers_ = {
               "bsource=search_baidu "
 }
 
+
 # 3.发送请求，得到响应对象
-response_ = requests.get(url=url, headers=headers_)
+response_ = requests.get(url=url, headers=headers)
 print("------1-------")
 str_data = response_.text  # 视频主页的html代码，类型是字符串
 print("------2-------")
@@ -39,9 +41,17 @@ title = title.replace('×', '')
 
 # 获取到视频的播放地址
 mp4_video = re.findall(r'"video":\[{"id":\d+,"baseUrl":"(.*?)"',vid_aud)[0]
-print(mp4_video)
-# 获取到视频音频
-mp3_video = re.findall(r'"audio":\[{"id":\d+,"baseUrl":"(.*?)"',vid_aud)[0]
-print(mp3_video)
 
+# 获取到视频音频
+mp3_audio = re.findall(r'"audio":\[{"id":\d+,"baseUrl":"(.*?)"',vid_aud)[0]
+print(mp3_audio)
+headers = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
+                  'Chrome/84.0.4147.125 Safari/537.36',
+    'Referer': url
+}
+# 请求视频地址
+headers_video = requests.get(url=mp4_video,headers=headers,stream=True)
+# 请求音频地址
+headers_audio = requests.get(url=mp3_audio,headers=headers,stream=True)
 
