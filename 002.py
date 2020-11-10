@@ -2,6 +2,7 @@ import re
 
 import requests
 from lxml import etree
+import os
 
 
 class a():
@@ -66,8 +67,17 @@ class a():
                 print("音频下载了%0.2f" % (inc * 100))
                 headers_videos.write(chunk)
 
+    # def composite(self):
+    #
+    #     # os.system(f'ffmpeg -i {self.title}.mp3 -i {self.title}.mp4 -c copy {self.title}.mp4 -loglevel quiet')
+    #     os.system('ffmpeg -i %s.mp4 -i %s.mp3 -c:v copy -c:a aac -strict experimental %s01.mp4'%(self.title,self.title,self.title,))
+    #     # 新增，显示合成文件的大小
+    #     res_ = int(os.stat(f'{self.title}.mp4').st_size / 1024)
+    #     print(f'{self.title}视频合成成功......大小为：{res_}KB,{int(res_ / 1024)}MB')
 
-Dowlat = a('https://www.bilibili.com/video/BV1LA411J77w/')
-Dowlat.audio()
 
 
+
+Dowlat = a('https://www.bilibili.com/video/BV1A7411J7jE')
+
+Dowlat.composite()
