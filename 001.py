@@ -37,7 +37,8 @@ title = title.replace('×', '')
 
 
 # 获取到视频的播放地址
-mp4_video = html_obj.xpath('//script[contains(text(),"window.__playinfo__")]/text()')
+mp4_video = html_obj.xpath('//script[contains(text(),"window.__playinfo__")]/text()')[0]
+mp4_video = re.findall(r'"video":\[{"id":\d+,"baseUrl":"(.*?)"',mp4_video)[0]
 print(mp4_video)
 mp3_video = html_obj.xpath('//script[contains(text(),"window.__playinfo__")]/text()')
 
