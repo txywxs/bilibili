@@ -5,7 +5,7 @@ import re
 
 # 1.确认url
 url = '' \
-      'https://www.bilibili.com/video/BV1k54y1r79P?spm_id_from=333.851.b_7265706f7274466972737431.8'
+      'https://www.bilibili.com/video/BV1LA411J77w/'
 # 2.设置用户代理,Cookie
 headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
@@ -54,4 +54,21 @@ headers = {
 headers_video = requests.get(url=mp4_video,headers=headers,stream=True)
 # 请求音频地址
 headers_audio = requests.get(url=mp3_audio,headers=headers,stream=True)
+inc = 0
+with open('./%s.mp4'%title, 'wb') as headers_videos:
+    # 流下载，比起直接content，iter_content 一次只让requests.get获取chunk_size大小的内容，
+    # 等到下载的内容存入文件后，再让requests.get获取后面的
+    for chunk in headers_video.iter_content(chunk_size=10000):# iter_content是一个可迭代对象
+        inc += 1000/int(headers_video.headers.get("content-length"))
+        print("视频下载了%0.2f"%(inc*1000))
+        headers_videos.write(chunk)
 
+inc = 0
+with open('./%s.mp3'%title, 'wb') as headers_audios:
+    # 流下载，比起直接content，iter_content 一次只让requests.get获取chunk_size大小的内容，
+    # 等到下载的内容存入文件后，再让requests.get获取后面的
+
+    for chunk in headers_audio.iter_content(chunk_size=1000):  # iter_content是一个可迭代对象
+        inc += 1000 / int(headers_audio.headers.get("content-length"))
+        print("音频下载了%0.2f" % (inc * 100))
+        headers_audios.write(chunk)
